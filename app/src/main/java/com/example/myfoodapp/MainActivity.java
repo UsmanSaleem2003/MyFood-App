@@ -1,19 +1,22 @@
 package com.example.myfoodapp;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.view.Menu;
+import android.view.View;
+import android.widget.Button;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.myfoodapp.activities.WelcomeActivity;
 import com.example.myfoodapp.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
@@ -32,12 +35,25 @@ public class MainActivity extends AppCompatActivity {
 
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
+
+        // Handle Logout Button
+        View headerView = navigationView.getHeaderView(0); // If button is in header
+        // Or if button is placed directly in navView, use this instead:
+        Button logoutBtn = navigationView.findViewById(R.id.btn_logout);
+
+        if (logoutBtn != null) {
+            logoutBtn.setOnClickListener(v -> {
+                FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(MainActivity.this, WelcomeActivity.class));
+                finish();
+            });
+        }
+
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_daily_meals, R.id.nav_favourite,R.id.nav_my_Cart)
+                R.id.nav_home, R.id.nav_daily_meals, R.id.nav_favourite, R.id.nav_my_Cart)
                 .setOpenableLayout(drawer)
                 .build();
+
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
@@ -45,7 +61,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }

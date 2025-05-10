@@ -2,7 +2,6 @@ package com.example.myfoodapp.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,8 +22,12 @@ public class WelcomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_welcome);
 
         mAuth = FirebaseAuth.getInstance();
+    }
 
-        // Check if user is already logged in
+    @Override
+    protected void onStart() {
+        super.onStart();
+
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             startActivity(new Intent(WelcomeActivity.this, MainActivity.class));
@@ -32,11 +35,11 @@ public class WelcomeActivity extends AppCompatActivity {
         }
     }
 
-    public void register(View view) {
+    public void register(android.view.View view) {
         startActivity(new Intent(WelcomeActivity.this, RegisterationActivity.class));
     }
 
-    public void login(View view) {
+    public void login(android.view.View view) {
         startActivity(new Intent(WelcomeActivity.this, LoginActivity.class));
     }
 }
