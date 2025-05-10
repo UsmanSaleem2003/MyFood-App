@@ -5,10 +5,18 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
@@ -22,13 +30,12 @@ import com.example.myfoodapp.databinding.ActivityMainBinding;
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
-    private ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        com.example.myfoodapp.databinding.ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         setSupportActionBar(binding.appBarMain.toolbar);
@@ -36,11 +43,36 @@ public class MainActivity extends AppCompatActivity {
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
 
-        // Handle Logout Button
-        View headerView = navigationView.getHeaderView(0); // If button is in header
-        // Or if button is placed directly in navView, use this instead:
-        Button logoutBtn = navigationView.findViewById(R.id.btn_logout);
+        // Load user info
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser != null) {
+            String uid = currentUser.getUid();
+            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users").child(uid);
 
+            View headerView = navigationView.getHeaderView(0);
+            TextView nameTextView = headerView.findViewById(R.id.nav_user_name);
+            TextView emailTextView = headerView.findViewById(R.id.nav_user_email);
+
+            emailTextView.setText(currentUser.getEmail());
+
+            userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists() && snapshot.hasChild("fullName")) {
+                        String fullName = snapshot.child("fullName").getValue(String.class);
+                        nameTextView.setText(fullName);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    nameTextView.setText("Name not found");
+                }
+            });
+        }
+
+        // Handle Logout Button
+        Button logoutBtn = navigationView.findViewById(R.id.btn_logout);
         if (logoutBtn != null) {
             logoutBtn.setOnClickListener(v -> {
                 FirebaseAuth.getInstance().signOut();
