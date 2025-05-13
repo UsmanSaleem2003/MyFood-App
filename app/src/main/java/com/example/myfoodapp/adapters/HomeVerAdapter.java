@@ -1,20 +1,20 @@
 package com.example.myfoodapp.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myfoodapp.R;
+import com.example.myfoodapp.activities.ItemDetailActivity;
 import com.example.myfoodapp.models.HomeVerModel;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.ArrayList;
 
@@ -66,39 +66,18 @@ public class HomeVerAdapter extends RecyclerView.Adapter<HomeVerAdapter.ViewHold
                 holder.imageView.setImageResource(R.drawable.placeholder);
             }
         } else {
-            cleanImageName = "";  // fallback to placeholder in dialog too
+            cleanImageName = "";
             holder.imageView.setImageResource(R.drawable.placeholder);
         }
 
         holder.itemView.setOnClickListener(view -> {
-            BottomSheetDialog dialog = new BottomSheetDialog(context, R.style.BottomSheetTheme);
-            View sheet = LayoutInflater.from(context).inflate(R.layout.bottom_sheet_layout, null);
-            dialog.setContentView(sheet);
-
-            ImageView bottomImg = sheet.findViewById(R.id.bottom_img);
-            TextView bottomName = sheet.findViewById(R.id.bottom_name);
-            TextView bottomPrice = sheet.findViewById(R.id.bottom_price);
-            TextView bottomRating = sheet.findViewById(R.id.bottom_rating);
-            TextView bottomTiming = sheet.findViewById(R.id.bottom_timing);
-
-            bottomName.setText(model.getName());
-            bottomPrice.setText(model.getPrice());
-            bottomRating.setText(model.getRating());
-            bottomTiming.setText(model.getTiming());
-
-            int bottomResId = context.getResources().getIdentifier(
-                    cleanImageName,
-                    "drawable",
-                    context.getPackageName());
-
-            bottomImg.setImageResource(bottomResId != 0 ? bottomResId : R.drawable.placeholder);
-
-            sheet.findViewById(R.id.add_to_cart).setOnClickListener(v -> {
-                Toast.makeText(context, "Added to cart", Toast.LENGTH_SHORT).show();
-                dialog.dismiss();
-            });
-
-            dialog.show();
+            Intent intent = new Intent(context, ItemDetailActivity.class);
+            intent.putExtra("name", model.getName());
+            intent.putExtra("price", model.getPrice());
+            intent.putExtra("rating", model.getRating());
+            intent.putExtra("timing", model.getTiming());
+            intent.putExtra("image", cleanImageName);
+            context.startActivity(intent);
         });
     }
 
