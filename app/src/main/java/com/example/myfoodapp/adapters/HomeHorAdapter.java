@@ -22,14 +22,15 @@ public class HomeHorAdapter extends RecyclerView.Adapter<HomeHorAdapter.ViewHold
     Activity activity;
     ArrayList<HomeHorModel> list;
 
-    boolean check = true;
-    boolean select = true;
-    int row_index = -1;
+    int row_index = 0;  // Default: first item selected
 
     public HomeHorAdapter(UpdateVerticalRec updateVerticalRec, Activity activity, ArrayList<HomeHorModel> list) {
         this.updateVerticalRec = updateVerticalRec;
         this.activity = activity;
         this.list = list;
+
+        // Trigger initial callback when adapter is created
+        updateVerticalRec.callback(row_index);
     }
 
     @NonNull
@@ -40,7 +41,6 @@ public class HomeHorAdapter extends RecyclerView.Adapter<HomeHorAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        // Display image based on drawable resource
         int imageResId = activity.getResources().getIdentifier(
                 list.get(position).getName().toLowerCase().replace(" ", ""),
                 "drawable", activity.getPackageName());
@@ -48,14 +48,16 @@ public class HomeHorAdapter extends RecyclerView.Adapter<HomeHorAdapter.ViewHold
         if (imageResId != 0) {
             holder.imageView.setImageResource(imageResId);
         } else {
-            holder.imageView.setImageResource(R.drawable.placeholder); // fallback
+            holder.imageView.setImageResource(R.drawable.placeholder);
         }
 
         holder.name.setText(list.get(position).getName());
 
-        if (check) {
-            updateVerticalRec.callback(position);
-            check = false;
+        // Selection highlight logic
+        if (row_index == position) {
+            holder.cardView.setBackgroundResource(R.drawable.change_bg);
+        } else {
+            holder.cardView.setBackgroundResource(R.drawable.default_bg);
         }
 
         holder.cardView.setOnClickListener(v -> {
@@ -66,15 +68,6 @@ public class HomeHorAdapter extends RecyclerView.Adapter<HomeHorAdapter.ViewHold
                 updateVerticalRec.callback(currentPos);
             }
         });
-
-        if (select && position == 0) {
-            holder.cardView.setBackgroundResource(R.drawable.change_bg);
-            select = false;
-        } else if (row_index == position) {
-            holder.cardView.setBackgroundResource(R.drawable.change_bg);
-        } else {
-            holder.cardView.setBackgroundResource(R.drawable.default_bg);
-        }
     }
 
     @Override

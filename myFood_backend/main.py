@@ -22,6 +22,7 @@ def get_db():
 
 @app.get("/products/{category}", response_model=List[schemas.ProductOut])
 def read_products(category: str, db: Session = Depends(get_db)):
+    print(f"📦 API HIT: Received request for category = {category}")
     return crud.get_products_by_category(db, category)
 
 @app.get("/products")

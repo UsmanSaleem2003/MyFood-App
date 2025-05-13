@@ -1,0 +1,14 @@
+run below command in below directory
+
+command: uvicorn main:app --reload
+
+directory: D:\Android-Studio-Projects\MyFoodApp\myFood_backend>
+
+
+example:
+
+PS D:\Android-Studio-Projects\MyFoodApp\myFood_backend> uvicorn main:app --reload
+
+or 
+
+uvicorn main:app --host 0.0.0.0 --port 8000 (to allow your app to get access to server running on your PC)

@@ -15,14 +15,17 @@ import com.example.myfoodapp.R;
 import com.example.myfoodapp.adapters.HomeHorAdapter;
 import com.example.myfoodapp.adapters.HomeVerAdapter;
 import com.example.myfoodapp.adapters.UpdateVerticalRec;
+import com.example.myfoodapp.api.ProductApiService;
+import com.example.myfoodapp.api.RetrofitClient;
 import com.example.myfoodapp.models.HomeHorModel;
 import com.example.myfoodapp.models.HomeVerModel;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class HomeFragment extends Fragment implements UpdateVerticalRec {
 
@@ -33,14 +36,18 @@ public class HomeFragment extends Fragment implements UpdateVerticalRec {
     ArrayList<HomeVerModel> HomeVerModelList;
     HomeVerAdapter homeVerAdapter;
 
+    ProductApiService apiService;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
-        homeHorizontalRec = root.findViewById(R.id.home_hor_rec);
-        homeVerticalRec = root.findViewById(R.id.home_ver_rec);
+        // ✅ First init Retrofit before adapter creation
+        apiService = RetrofitClient.getInstance().create(ProductApiService.class);
 
+        // RecyclerView for horizontal
+        homeHorizontalRec = root.findViewById(R.id.home_hor_rec);
         HomeHorModelList = new ArrayList<>();
         HomeHorModelList.add(new HomeHorModel(R.drawable.pizza, "pizza"));
         HomeHorModelList.add(new HomeHorModel(R.drawable.hamburger, "burger"));
@@ -52,51 +59,50 @@ public class HomeFragment extends Fragment implements UpdateVerticalRec {
         homeHorizontalRec.setAdapter(homeHorAdapter);
         homeHorizontalRec.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
 
+        // RecyclerView for vertical
+        homeVerticalRec = root.findViewById(R.id.home_ver_rec);
         HomeVerModelList = new ArrayList<>();
         homeVerAdapter = new HomeVerAdapter(getActivity(), HomeVerModelList);
         homeVerticalRec.setAdapter(homeVerAdapter);
         homeVerticalRec.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
 
-        loadVerticalData("pizza"); // Default load
+        // ✅ Default category
+        loadVerticalData("pizza");
 
         return root;
     }
 
     private void loadVerticalData(String category) {
-        FirebaseDatabase.getInstance().getReference("products")
-                .orderByChild("category").equalTo(category)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        ArrayList<HomeVerModel> updatedList = new ArrayList<>();
-                        for (DataSnapshot child : snapshot.getChildren()) {
-                            String name = child.child("name").getValue(String.class);
-                            String imageName = child.child("imageUrl").getValue(String.class);
-                            Double priceVal = child.child("price").getValue(Double.class);
-                            String price = "Min - $" + (priceVal != null ? priceVal : 0);
-                            String timing = "10:00 - 23:00";  // default or use Firebase if dynamic
-                            String rating = "4.9";  // default or use child.get("rating")
+        if (apiService == null) {
+            Log.e("API_INIT", "apiService is null!");
+            return;
+        }
 
-                            updatedList.add(new HomeVerModel(name, timing, rating, price, imageName));
-                        }
-                        homeVerAdapter.updateList(updatedList);
-                    }
+        Call<List<HomeVerModel>> call = apiService.getProductsByCategory(category);
+        call.enqueue(new Callback<List<HomeVerModel>>() {
+            @Override
+            public void onResponse(Call<List<HomeVerModel>> call, Response<List<HomeVerModel>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<HomeVerModel> data = response.body();
+                    Log.d("API_SUCCESS", "Loaded " + data.size() + " items for category " + category);
+                    HomeVerModelList.clear();
+                    HomeVerModelList.addAll(data);
+                    homeVerAdapter.updateList(HomeVerModelList);
+                } else {
+                    Log.e("API_FAIL", "Response Error: " + response.message());
+                }
+            }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        Log.e("FIREBASE_DB", "Error: " + error.getMessage());
-                    }
-                });
+            @Override
+            public void onFailure(Call<List<HomeVerModel>> call, Throwable t) {
+                Log.e("API_FAIL", "Request Failed: " + t.getMessage());
+            }
+        });
     }
 
     @Override
     public void callback(int position) {
         String category = HomeHorModelList.get(position).getName().toLowerCase();
         loadVerticalData(category);
-    }
-
-    @Override
-    public void callback(int position, ArrayList<HomeVerModel> list) {
-
     }
 }

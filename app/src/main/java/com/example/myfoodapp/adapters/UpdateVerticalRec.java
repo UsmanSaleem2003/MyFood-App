@@ -7,5 +7,5 @@ import java.util.ArrayList;
 public interface UpdateVerticalRec {
     void callback(int position);
 
-    void callback(int position, ArrayList<HomeVerModel> list);
+//    void callback(int position, ArrayList<HomeVerModel> list);
 }
