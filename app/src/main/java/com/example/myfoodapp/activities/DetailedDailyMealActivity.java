@@ -68,7 +68,7 @@ public class DetailedDailyMealActivity extends AppCompatActivity
             detailedDailyModelList.add(new DetailedDailyModel(R.drawable.pizza1,"Dinner","description","4.4","40","10 am to 9 pm"));
             detailedDailyModelList.add(new DetailedDailyModel(R.drawable.burger2,"Dinner","description","4.4","40","10 am to 9 pm"));
             detailedDailyModelList.add(new DetailedDailyModel(R.drawable.pizza3,"Dinner","description","4.4","40","10 am to 9 pm"));
-            detailedDailyModelList.add(new DetailedDailyModel(R.drawable.burger4,"Dinner","description","4.4","40","10 am to 9 pm"));
+            detailedDailyModelList.add(new DetailedDailyModel(R.drawable.burger3,"Dinner","description","4.4","40","10 am to 9 pm"));
             dailyAdapter.notifyDataSetChanged();
         }
         if(type != null && type.equalsIgnoreCase("coffe"))

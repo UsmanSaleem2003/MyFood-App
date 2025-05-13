@@ -5,6 +5,7 @@ import com.example.myfoodapp.models.HomeVerModel;
 import java.util.ArrayList;
 
 public interface UpdateVerticalRec {
+    void callback(int position);
 
-    public void callback(int position, ArrayList<HomeVerModel> list);
+    void callback(int position, ArrayList<HomeVerModel> list);
 }

@@ -1,59 +1,37 @@
 package com.example.myfoodapp.models;
 
 public class HomeVerModel {
-    int image;
-    String name;
-    String timing;
-    String rating;
-    String price;
+    private String name;
+    private String timing;
+    private String rating;
+    private String price;
+    private String imageName;  // Drawable name
 
-    public HomeVerModel(int image, String name, String timing, String rating, String price) {
-        this.image = image;
+    public HomeVerModel(String name, String timing, String rating, String price, String imageName) {
         this.name = name;
         this.timing = timing;
         this.rating = rating;
         this.price = price;
+        this.imageName = imageName;
     }
 
-    public int getImage() {
-        return image;
-    }
-
-    public void setImage(int image) {
-        this.image = image;
+    public String getImageName() {
+        return imageName;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getTiming() {
         return timing;
-    }
-
-    public void setTiming(String timing) {
-        this.timing = timing;
     }
 
     public String getRating() {
         return rating;
     }
 
-    public void setRating(String rating) {
-        this.rating = rating;
-    }
-
     public String getPrice() {
         return price;
     }
-
-    public void setPrice(String price) {
-        this.price = price;
-    }
-
-
 }

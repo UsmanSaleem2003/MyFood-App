@@ -16,90 +16,79 @@ import com.example.myfoodapp.models.HomeVerModel;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class HomeVerAdapter extends RecyclerView.Adapter<HomeVerAdapter.ViewHolder> {
 
     private BottomSheetDialog bottomSheetDialog;
-    Context context;
-    ArrayList<HomeVerModel> list;
+    private final Context context;
+    private ArrayList<HomeVerModel> list;
 
-    public HomeVerAdapter(Context context, ArrayList<HomeVerModel> list)
-    {
+    public HomeVerAdapter(Context context, ArrayList<HomeVerModel> list) {
         this.context = context;
-        this.list = list;
+        this.list = new ArrayList<>(list);
+    }
+
+    public void updateList(ArrayList<HomeVerModel> newList) {
+        this.list = new ArrayList<>(newList);
+        notifyDataSetChanged();
     }
 
     @NonNull
     @Override
-    public HomeVerAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
-    {
-        return new HomeVerAdapter.ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.home_vertical_item,parent,false));
+    public HomeVerAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.home_vertical_item, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull HomeVerAdapter.ViewHolder holder, int position)
-    {
+    public void onBindViewHolder(@NonNull HomeVerAdapter.ViewHolder holder, int position) {
+        HomeVerModel model = list.get(position);
+        holder.name.setText(model.getName());
+        holder.timing.setText(model.getTiming());
+        holder.rating.setText(model.getRating());
+        holder.price.setText(model.getPrice());
 
-        final String mName = list.get(position).getName();
-        final String mTiming = list.get(position).getTiming();
-        final String mRating = list.get(position).getRating();
-        final String mPrice = list.get(position).getPrice();
-        final int mImage = list.get(position).getImage();
+        int imageResId = context.getResources().getIdentifier(
+                model.getImageName().replace(".jpg", "").replace(".png", ""),
+                "drawable", context.getPackageName());
 
-        holder.imageView.setImageResource(list.get(position).getImage());
-        holder.name.setText(list.get(position).getName());
-        holder.timing.setText(list.get(position).getTiming());
-        holder.rating.setText(list.get(position).getRating());
-        holder.price.setText(list.get(position).getPrice());
+        if (imageResId != 0) {
+            holder.imageView.setImageResource(imageResId);
+        } else {
+            holder.imageView.setImageResource(R.drawable.placeholder); // fallback
+        }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                bottomSheetDialog = new BottomSheetDialog(context,R.style.BottomSheetTheme);
+                bottomSheetDialog = new BottomSheetDialog(context, R.style.BottomSheetTheme);
 
-                View sheetView = LayoutInflater.from(context).inflate(R.layout.bottom_sheet_layout,null);
+                View sheetView = LayoutInflater.from(context).inflate(R.layout.bottom_sheet_layout, null);
+                bottomSheetDialog.setContentView(sheetView);
+
                 sheetView.findViewById(R.id.add_to_cart).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Toast.makeText(context,"Added To Cart",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Added To Cart", Toast.LENGTH_SHORT).show();
                         bottomSheetDialog.dismiss();
                     }
                 });
 
-                ImageView bottomImg = sheetView.findViewById(R.id.bottom_img);
-                TextView bottomName = sheetView.findViewById(R.id.bottom_name);
-                TextView bottomPrice = sheetView.findViewById(R.id.bottom_price);
-                TextView bottomRating = sheetView.findViewById(R.id.bottom_rating);
-
-                bottomName.setText(mName);
-                bottomPrice.setText(mPrice);
-                bottomRating.setText(mRating);
-                bottomImg.setImageResource(mImage);
-
-                bottomSheetDialog.setContentView(sheetView);
                 bottomSheetDialog.show();
-
             }
         });
-
     }
 
     @Override
-    public int getItemCount()
-    {
+    public int getItemCount() {
         return list.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder
-    {
-
-        TextView name,timing,rating,price;
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        TextView name, timing, rating, price;
         ImageView imageView;
-        public ViewHolder(@NonNull View itemView)
-        {
-            super(itemView);
 
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
             imageView = itemView.findViewById(R.id.ver_img);
             name = itemView.findViewById(R.id.name);
             timing = itemView.findViewById(R.id.timing);
