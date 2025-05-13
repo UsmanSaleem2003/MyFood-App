@@ -49,17 +49,24 @@ public class HomeVerAdapter extends RecyclerView.Adapter<HomeVerAdapter.ViewHold
         holder.price.setText(model.getPrice());
 
         String imageName = model.getImageName();
+        final String cleanImageName;
+
         if (imageName != null && !imageName.trim().isEmpty()) {
+            cleanImageName = imageName.trim().toLowerCase();
+
             int imageResId = context.getResources().getIdentifier(
-                    imageName.replace(".jpg", "").replace(".png", ""),
-                    "drawable", context.getPackageName());
+                    cleanImageName,
+                    "drawable",
+                    context.getPackageName());
+
             if (imageResId != 0) {
                 holder.imageView.setImageResource(imageResId);
             } else {
-                Log.w("ImageLoad", "Drawable not found for: " + imageName);
+                Log.w("ImageLoad", "Drawable not found for: " + cleanImageName);
                 holder.imageView.setImageResource(R.drawable.placeholder);
             }
         } else {
+            cleanImageName = "";  // fallback to placeholder in dialog too
             holder.imageView.setImageResource(R.drawable.placeholder);
         }
 
@@ -79,14 +86,12 @@ public class HomeVerAdapter extends RecyclerView.Adapter<HomeVerAdapter.ViewHold
             bottomRating.setText(model.getRating());
             bottomTiming.setText(model.getTiming());
 
-            if (imageName != null && !imageName.trim().isEmpty()) {
-                int bottomResId = context.getResources().getIdentifier(
-                        imageName.replace(".jpg", "").replace(".png", ""),
-                        "drawable", context.getPackageName());
-                bottomImg.setImageResource(bottomResId != 0 ? bottomResId : R.drawable.placeholder);
-            } else {
-                bottomImg.setImageResource(R.drawable.placeholder);
-            }
+            int bottomResId = context.getResources().getIdentifier(
+                    cleanImageName,
+                    "drawable",
+                    context.getPackageName());
+
+            bottomImg.setImageResource(bottomResId != 0 ? bottomResId : R.drawable.placeholder);
 
             sheet.findViewById(R.id.add_to_cart).setOnClickListener(v -> {
                 Toast.makeText(context, "Added to cart", Toast.LENGTH_SHORT).show();

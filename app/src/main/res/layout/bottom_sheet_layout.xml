@@ -24,8 +24,6 @@
         android:layout_width="90dp"
         android:layout_height="3dp"
         android:background="@color/purple_500"
-
-
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView11" />
@@ -33,8 +31,9 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="4dp"
+        android:layout_marginHorizontal="6dp"
         android:orientation="horizontal"
         app:layout_constraintTop_toBottomOf="@+id/View">
 
@@ -43,9 +42,12 @@
             android:layout_width="130dp"
             android:layout_height="110dp"
             android:layout_margin="10dp"
+            android:layout_marginBottom="20dp"
+            android:contentDescription="@string/food_image"
             android:scaleType="centerCrop"
-            app:riv_corner_radius="24dp"
-            android:contentDescription="@string/food_image" />
+            android:translationY="-8dp"
+            app:riv_corner_radius="24dp" />
+
 
         <LinearLayout
             android:layout_width="match_parent"

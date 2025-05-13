@@ -1,10 +1,13 @@
 package com.example.myfoodapp.models;
 
+import com.google.gson.annotations.SerializedName;
+
 public class HomeVerModel {
     private String name;
     private String timing;
     private String rating;
     private String price;
+    @SerializedName("image_name")
     private String imageName;  // Drawable name
 
     public HomeVerModel(String name, String timing, String rating, String price, String imageName) {
