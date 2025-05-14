@@ -1,70 +1,172 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/Mediumgrey"
     android:padding="16dp">
 
-    <LinearLayout
+    <ScrollView
+        android:id="@+id/scroll_section"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/detail_add_to_cart"
+        android:layout_alignParentTop="true"
+        android:fillViewport="true"
+        android:layout_marginBottom="50dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="25dp">
+
+            <ImageView
+                android:id="@+id/detail_img"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:scaleType="centerCrop"
+                android:layout_marginBottom="16dp"/>
+
+            <TextView
+                android:id="@+id/detail_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Name"
+                android:textSize="28sp"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Description:"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:layout_marginTop="10dp"/>
+
+            <TextView
+                android:id="@+id/detail_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Description content"
+                android:textColor="@color/white" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rating:"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:layout_marginTop="10dp"/>
+
+            <TextView
+                android:id="@+id/detail_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4.5"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:layout_marginTop="4dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Availability:"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:layout_marginTop="4dp"/>
+
+            <TextView
+                android:id="@+id/detail_timing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="11 AM - 8 PM"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Price:"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:layout_marginTop="4dp"/>
+
+            <TextView
+                android:id="@+id/detail_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="$6.99"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:layout_marginTop="4dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ingredients:"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:layout_marginTop="12dp"/>
+
+            <TextView
+                android:id="@+id/detail_ingredients"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ingredients details here"
+                android:textColor="@color/white" />
+
+            <EditText
+                android:id="@+id/review_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Write your review (max 50 chars)..."
+                android:maxLength="50"
+                android:layout_marginTop="20dp"
+                android:padding="10dp"
+                android:background="@drawable/search_bg"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white" />
+
+            <Button
+                android:id="@+id/submit_review_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Submit"
+                android:textAllCaps="false"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rounded_button"
+                android:textColor="@android:color/white"
+                android:paddingHorizontal="24dp"
+                android:paddingVertical="4dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Reviews:"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:layout_marginTop="16dp" />
+
+            <LinearLayout
+                android:id="@+id/reviews_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="80dp" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/detail_add_to_cart"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="25dp">
-
-        <ImageView
-            android:id="@+id/detail_img"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:scaleType="centerCrop"
-            android:layout_marginBottom="16dp"/>
-
-        <TextView
-            android:id="@+id/detail_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Name"
-            android:textSize="28sp"
-            android:textColor="@color/white"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/detail_description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Description"
-            android:textColor="@color/white"
-            android:layout_marginTop="4dp"/>
-
-        <TextView
-            android:id="@+id/detail_rating"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="4.5"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:layout_marginTop="8dp"/>
-
-        <TextView
-            android:id="@+id/detail_timing"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="11 AM - 8 PM"
-            android:textColor="@color/white" />
-
-        <TextView
-            android:id="@+id/detail_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="$6.99"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:layout_marginTop="8dp"/>
-
-        <Button
-            android:id="@+id/detail_add_to_cart"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Add to Cart"
-            android:layout_marginTop="16dp"/>
-    </LinearLayout>
-</ScrollView>
+        android:text="Add to Cart"
+        android:layout_alignParentBottom="true"
+        android:textAllCaps="true"
+        android:textStyle="bold"
+        android:textColor="@android:color/white"/>
+</RelativeLayout>

@@ -11,6 +11,7 @@ class ReviewCreate(BaseModel):
     text: str
 
 class ProductOut(BaseModel):
+    id: int
     name: str
     category: str
     image_name: str

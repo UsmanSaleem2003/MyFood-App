@@ -72,6 +72,7 @@ public class HomeVerAdapter extends RecyclerView.Adapter<HomeVerAdapter.ViewHold
 
         holder.itemView.setOnClickListener(view -> {
             Intent intent = new Intent(context, ItemDetailActivity.class);
+            intent.putExtra("product_id", model.getId());
             intent.putExtra("name", model.getName());
             intent.putExtra("price", model.getPrice());
             intent.putExtra("rating", model.getRating());
