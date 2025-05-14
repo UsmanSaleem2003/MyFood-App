@@ -3,14 +3,11 @@ from sqlalchemy.orm import Session
 from models import Product
 from database import SessionLocal
 
-# Load JSON file
 with open("products.json", "r") as f:
     products_data = json.load(f)
 
-# Connect to database
 db: Session = SessionLocal()
 
-# Insert products
 for product in products_data["products"]:
     new_product = Product(
         name=product["name"],
@@ -18,7 +15,9 @@ for product in products_data["products"]:
         price=product["price"],
         rating=product["rating"],
         image_name=product["imageName"],
-        timing=product["availability_time"]
+        timing=product["availability_time"],
+        description=product["description"],
+        ingredients=product["ingredients"]
     )
     db.add(new_product)
 
