@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_daily_meals, R.id.nav_favourite, R.id.nav_my_Cart)
+                R.id.nav_home, R.id.nav_favourite, R.id.nav_my_Cart)
                 .setOpenableLayout(drawer)
                 .build();
 
