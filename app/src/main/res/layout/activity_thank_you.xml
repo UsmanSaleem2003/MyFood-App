@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/Mediumgrey"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:gravity="center">
+
+    <TextView
+        android:id="@+id/thank_you_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Thanks for ordering!"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:layout_marginBottom="16dp" />
+
+    <TextView
+        android:id="@+id/counter_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Going back to home in 3 seconds"
+        android:textSize="16sp"
+        android:textColor="@color/white"
+        android:layout_marginBottom="24dp" />
+
+    <Button
+        android:id="@+id/go_home_now_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Go to home now"
+        android:textStyle="bold" />
+</LinearLayout>

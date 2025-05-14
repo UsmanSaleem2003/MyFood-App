@@ -122,6 +122,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Write your review (max 50 chars)..."
                 android:maxLength="50"
+                android:textSize="16sp"
                 android:layout_marginTop="20dp"
                 android:padding="10dp"
                 android:background="@drawable/search_bg"
@@ -130,16 +131,16 @@
 
             <Button
                 android:id="@+id/submit_review_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="100dp"
+                android:layout_height="30dp"
                 android:text="Submit"
                 android:textAllCaps="false"
-                android:textStyle="bold"
                 android:layout_marginTop="10dp"
+                android:backgroundTint="@color/submitRed"
                 android:background="@drawable/rounded_button"
                 android:textColor="@android:color/white"
-                android:paddingHorizontal="24dp"
-                android:paddingVertical="4dp"/>
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="0dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -163,8 +164,9 @@
     <Button
         android:id="@+id/detail_add_to_cart"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:text="Add to Cart"
+        android:textSize="18sp"
         android:layout_alignParentBottom="true"
         android:textAllCaps="true"
         android:textStyle="bold"

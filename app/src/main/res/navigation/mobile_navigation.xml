@@ -22,9 +22,5 @@
         android:name="com.example.myfoodapp.ui.favourite.FavouriteFragment"
         android:label="@string/favourite"
         tools:layout="@layout/fragment_favourite" />
-    <fragment
-        android:id="@+id/myCartFragment"
-        android:name="com.example.myfoodapp.ui.MyCart.MyCartFragment"
-        android:label="@string/my_cart"
-        tools:layout="@layout/fragment_my_cart" />
+
 </navigation>

@@ -6,7 +6,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,8 +15,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.myfoodapp.R;
 import com.example.myfoodapp.api.ProductApiService;
 import com.example.myfoodapp.api.RetrofitClient;
+import com.example.myfoodapp.models.CartItemModel;
 import com.example.myfoodapp.models.ProductDetailModel;
 import com.example.myfoodapp.models.ReviewModel;
+import com.example.myfoodapp.utils.CartManager;
 
 import java.util.List;
 
@@ -31,6 +32,9 @@ public class ItemDetailActivity extends AppCompatActivity {
     private LinearLayout reviewsContainer;
     private EditText reviewInput;
     private int productId = -1;
+
+    private String productName, imageName, productTiming;
+    private double productPrice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +54,6 @@ public class ItemDetailActivity extends AppCompatActivity {
         reviewsContainer = findViewById(R.id.reviews_container);
 
         productId = getIntent().getIntExtra("product_id", -1);
-
         apiService = RetrofitClient.getInstance().create(ProductApiService.class);
 
         apiService.getProductDetail(productId).enqueue(new Callback<ProductDetailModel>() {
@@ -58,17 +61,25 @@ public class ItemDetailActivity extends AppCompatActivity {
             public void onResponse(@NonNull Call<ProductDetailModel> call, @NonNull Response<ProductDetailModel> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     ProductDetailModel product = response.body();
-                    name.setText(product.getName());
+
+                    productName = product.getName();
+                    imageName = product.getImage_name();
+                    productTiming = product.getTiming();
+                    productPrice = product.getPrice();
+
+                    name.setText(productName);
                     desc.setText(product.getDescription());
                     rating.setText(String.valueOf(product.getRating()));
-                    timing.setText(product.getTiming());
-                    price.setText("$" + product.getPrice());
+                    timing.setText(productTiming);
+                    price.setText("$" + String.format("%.2f", productPrice));
                     ingredients.setText(product.getIngredients());
 
                     int imageResId = getResources().getIdentifier(
-                            product.getImage_name().toLowerCase(), "drawable", getPackageName());
-                    img.setImageResource(imageResId != 0 ? imageResId : R.drawable.placeholder);
+                            imageName.toLowerCase().replace(".jpg", "").replace(".png", ""),
+                            "drawable",
+                            getPackageName());
 
+                    img.setImageResource(imageResId != 0 ? imageResId : R.drawable.placeholder);
                     renderReviews(product.getReviews());
                 }
             }
@@ -87,7 +98,6 @@ public class ItemDetailActivity extends AppCompatActivity {
             }
 
             ReviewModel review = new ReviewModel();
-//            review.text = text;  // Make public or add setter
             review.setText(text);
             apiService.submitReview(productId, review).enqueue(new Callback<ReviewModel>() {
                 @Override
@@ -106,8 +116,12 @@ public class ItemDetailActivity extends AppCompatActivity {
             });
         });
 
-        addToCart.setOnClickListener(v ->
-                Toast.makeText(this, "Added to cart", Toast.LENGTH_SHORT).show());
+        addToCart.setOnClickListener(v -> {
+            CartManager.addItem(new CartItemModel(
+                    productName, imageName, productTiming, productPrice, 1
+            ));
+            Toast.makeText(this, "Added to cart", Toast.LENGTH_SHORT).show();
+        });
     }
 
     private void renderReviews(List<ReviewModel> reviews) {
@@ -124,12 +138,11 @@ public class ItemDetailActivity extends AppCompatActivity {
         reviewView.setBackgroundResource(R.drawable.review_box_bg);
         reviewView.setTextColor(getResources().getColor(R.color.white));
 
-        // ✅ Add bottom margin to each review
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
         );
-        params.setMargins(0, 0, 0, 12); // left, top, right, bottom
+        params.setMargins(0, 0, 0, 16);
         reviewView.setLayoutParams(params);
 
         reviewsContainer.addView(reviewView);

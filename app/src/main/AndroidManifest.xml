@@ -20,6 +20,12 @@
 
         <activity android:name=".activities.ItemDetailActivity" />
 
+        <activity android:name=".activities.SearchActivity" />
+
+        <activity android:name=".activities.CartActivity" />
+
+        <activity android:name=".activities.ThankYouActivity" />
+
         <activity
             android:name=".activities.RegisterationActivity"
             android:exported="false" />

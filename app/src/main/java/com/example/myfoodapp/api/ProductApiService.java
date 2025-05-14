@@ -11,6 +11,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface ProductApiService {
     @GET("products/{category}")
@@ -21,4 +22,8 @@ public interface ProductApiService {
 
     @POST("product/{id}/review")
     Call<ReviewModel> submitReview(@Path("id") int id, @Body ReviewModel review);
+
+    @GET("search")
+    Call<List<HomeVerModel>> searchProducts(@Query("q") String query);
+
 }

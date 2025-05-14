@@ -17,3 +17,6 @@ def add_review(db: Session, product_id: int, review_data: ReviewCreate):
     db.commit()
     db.refresh(review)
     return review
+
+def search_products(db: Session, query: str):
+    return db.query(Product).filter(Product.name.ilike(f"%{query}%")).all()

@@ -24,6 +24,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.example.myfoodapp.activities.CartActivity;
 import com.example.myfoodapp.activities.WelcomeActivity;
 import com.example.myfoodapp.databinding.ActivityMainBinding;
 
@@ -35,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        com.example.myfoodapp.databinding.ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
+        ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         setSupportActionBar(binding.appBarMain.toolbar);
@@ -43,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
 
-        // Load user info
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser != null) {
             String uid = currentUser.getUid();
@@ -89,6 +89,17 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        // ✅ THIS MUST BE BELOW setupWithNavController to override default handling
+        navigationView.setNavigationItemSelectedListener(item -> {
+            int id = item.getItemId();
+            if (id == R.id.nav_my_Cart) {
+                startActivity(new Intent(this, CartActivity.class));
+                return true;
+            }
+            return NavigationUI.onNavDestinationSelected(item, navController)
+                    || super.onOptionsItemSelected(item);
+        });
     }
 
     @Override

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/Mediumgrey">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp">
+
+            <TextView
+                android:id="@+id/total_items_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Total Items: 0"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:layout_marginBottom="8dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/cart_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:scrollbars="vertical" />
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Bottom summary and actions -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/coupon_input"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:hint="Enter coupon"
+                android:background="@drawable/search_bg"
+                android:textColorHint="@color/white"
+                android:textColor="@color/white"
+                android:padding="12dp" />
+
+            <Button
+                android:id="@+id/apply_coupon_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Apply"
+                android:textStyle="bold"
+                android:layout_marginStart="8dp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/net_total_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Net Total: $0.00"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:layout_marginTop="12dp" />
+
+        <TextView
+            android:id="@+id/discount_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Discount: $0.00"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/delivery_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Delivery: $5.00"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/final_total_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Final Total: $0.00"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginTop="4dp" />
+
+        <Button
+            android:id="@+id/checkout_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Checkout"
+            android:layout_marginTop="12dp"
+            android:textStyle="bold" />
+    </LinearLayout>
+</LinearLayout>

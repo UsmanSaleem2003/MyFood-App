@@ -36,3 +36,7 @@ def read_single_product(product_id: int, db: Session = Depends(get_db)):
 @app.post("/product/{product_id}/review", response_model=schemas.ReviewOut)
 def create_review(product_id: int, review: schemas.ReviewCreate, db: Session = Depends(get_db)):
     return crud.add_review(db, product_id, review)
+
+@app.get("/search", response_model=List[schemas.ProductOut])
+def search_products(q: str, db: Session = Depends(get_db)):
+    return crud.search_products(db, q)

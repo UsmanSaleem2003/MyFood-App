@@ -1,10 +1,12 @@
 package com.example.myfoodapp.ui.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -12,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myfoodapp.R;
+import com.example.myfoodapp.activities.SearchActivity;
 import com.example.myfoodapp.adapters.HomeHorAdapter;
 import com.example.myfoodapp.adapters.HomeVerAdapter;
 import com.example.myfoodapp.adapters.UpdateVerticalRec;
@@ -43,10 +46,18 @@ public class HomeFragment extends Fragment implements UpdateVerticalRec {
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
-        // ✅ First init Retrofit before adapter creation
+        // Retrofit setup
         apiService = RetrofitClient.getInstance().create(ProductApiService.class);
 
-        // RecyclerView for horizontal
+        // Setup Search Redirect
+        EditText searchBar = root.findViewById(R.id.editText4);
+        searchBar.setFocusable(false); // Prevent keyboard popup
+        searchBar.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), SearchActivity.class);
+            startActivity(intent);
+        });
+
+        // Horizontal RecyclerView
         homeHorizontalRec = root.findViewById(R.id.home_hor_rec);
         HomeHorModelList = new ArrayList<>();
         HomeHorModelList.add(new HomeHorModel(R.drawable.pizza, "pizza"));
@@ -59,14 +70,14 @@ public class HomeFragment extends Fragment implements UpdateVerticalRec {
         homeHorizontalRec.setAdapter(homeHorAdapter);
         homeHorizontalRec.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
 
-        // RecyclerView for vertical
+        // Vertical RecyclerView
         homeVerticalRec = root.findViewById(R.id.home_ver_rec);
         HomeVerModelList = new ArrayList<>();
         homeVerAdapter = new HomeVerAdapter(getActivity(), HomeVerModelList);
         homeVerticalRec.setAdapter(homeVerAdapter);
         homeVerticalRec.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
 
-        // ✅ Default category
+        // Default category = pizza
         loadVerticalData("pizza");
 
         return root;
@@ -81,7 +92,7 @@ public class HomeFragment extends Fragment implements UpdateVerticalRec {
         Call<List<HomeVerModel>> call = apiService.getProductsByCategory(category);
         call.enqueue(new Callback<List<HomeVerModel>>() {
             @Override
-            public void onResponse(Call<List<HomeVerModel>> call, Response<List<HomeVerModel>> response) {
+            public void onResponse(@NonNull Call<List<HomeVerModel>> call, @NonNull Response<List<HomeVerModel>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     List<HomeVerModel> data = response.body();
                     Log.d("API_SUCCESS", "Loaded " + data.size() + " items for category " + category);
@@ -94,7 +105,7 @@ public class HomeFragment extends Fragment implements UpdateVerticalRec {
             }
 
             @Override
-            public void onFailure(Call<List<HomeVerModel>> call, Throwable t) {
+            public void onFailure(@NonNull Call<List<HomeVerModel>> call, Throwable t) {
                 Log.e("API_FAIL", "Request Failed: " + t.getMessage());
             }
         });
