@@ -62,7 +62,7 @@ public class CartActivity extends AppCompatActivity {
             if (CartManager.getCartItems().isEmpty()) {
                 Toast.makeText(this, "Cart is already empty", Toast.LENGTH_SHORT).show();
             } else {
-                CartManager.clearCart();
+                CartManager.clearCart(this);
                 cartAdapter.notifyDataSetChanged();
                 couponApplied = false;
                 couponInput.setText("");

@@ -117,7 +117,7 @@ public class ItemDetailActivity extends AppCompatActivity {
         });
 
         addToCart.setOnClickListener(v -> {
-            CartManager.addItem(new CartItemModel(
+            CartManager.addItem(this, new CartItemModel(
                     productName, imageName, productTiming, productPrice, 1
             ));
             Toast.makeText(this, "Added to cart", Toast.LENGTH_SHORT).show();
