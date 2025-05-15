@@ -4,8 +4,9 @@ from typing import List, Optional
 class ReviewOut(BaseModel):
     id: int
     text: str
+
     class Config:
-        orm_mode = True
+        from_attributes = True  # Replaces orm_mode
 
 class ReviewCreate(BaseModel):
     text: str
@@ -23,4 +24,4 @@ class ProductOut(BaseModel):
     reviews: List[ReviewOut] = []
 
     class Config:
-        orm_mode = True
+        from_attributes = True  # Replaces orm_mode

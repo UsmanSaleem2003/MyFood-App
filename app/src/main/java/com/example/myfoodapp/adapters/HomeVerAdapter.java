@@ -45,8 +45,8 @@ public class HomeVerAdapter extends RecyclerView.Adapter<HomeVerAdapter.ViewHold
 
         holder.name.setText(model.getName());
         holder.timing.setText(model.getTiming());
-        holder.rating.setText(model.getRating());
-        holder.price.setText(model.getPrice());
+        holder.rating.setText(String.valueOf(model.getRating()));
+        holder.price.setText(String.format("$%.2f", model.getPrice()));
 
         String imageName = model.getImageName();
         final String cleanImageName;

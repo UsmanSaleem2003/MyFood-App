@@ -14,7 +14,7 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface ProductApiService {
-    @GET("products/{category}")
+    @GET("/products/{category}")
     Call<List<HomeVerModel>> getProductsByCategory(@Path("category") String category);
 
     @GET("product/{id}")

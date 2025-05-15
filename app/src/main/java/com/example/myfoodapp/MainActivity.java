@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.myfoodapp.activities.FavoritesActivity;
 import com.example.myfoodapp.utils.CartManager;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -96,6 +97,11 @@ public class MainActivity extends AppCompatActivity {
             int id = item.getItemId();
             if (id == R.id.nav_my_Cart) {
                 startActivity(new Intent(this, CartActivity.class));
+                return true;
+            }
+
+            if (id == R.id.nav_favourite) {
+                startActivity(new Intent(this, FavoritesActivity.class));
                 return true;
             }
             return NavigationUI.onNavDestinationSelected(item, navController)

@@ -89,24 +89,25 @@ public class HomeFragment extends Fragment implements UpdateVerticalRec {
             return;
         }
 
+        Log.d("API_CALL", "Requesting category: " + category);
         Call<List<HomeVerModel>> call = apiService.getProductsByCategory(category);
         call.enqueue(new Callback<List<HomeVerModel>>() {
             @Override
             public void onResponse(@NonNull Call<List<HomeVerModel>> call, @NonNull Response<List<HomeVerModel>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     List<HomeVerModel> data = response.body();
-                    Log.d("API_SUCCESS", "Loaded " + data.size() + " items for category " + category);
+                    Log.d("API_SUCCESS", "Loaded " + data.size() + " items for category: " + category);
                     HomeVerModelList.clear();
                     HomeVerModelList.addAll(data);
                     homeVerAdapter.updateList(HomeVerModelList);
                 } else {
-                    Log.e("API_FAIL", "Response Error: " + response.message());
+                    Log.e("API_FAIL", "Response error: " + response.code() + " - " + response.message());
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<List<HomeVerModel>> call, Throwable t) {
-                Log.e("API_FAIL", "Request Failed: " + t.getMessage());
+                Log.e("API_FAIL", "Request failed: " + t.getMessage(), t);
             }
         });
     }

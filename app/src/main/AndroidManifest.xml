@@ -23,6 +23,8 @@
 
         <activity android:name=".activities.ThankYouActivity" />
 
+        <activity android:name=".activities.FavoritesActivity" />
+
         <activity
             android:name=".activities.RegisterationActivity"
             android:exported="false" />
