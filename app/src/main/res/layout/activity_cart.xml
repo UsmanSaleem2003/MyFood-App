@@ -5,6 +5,27 @@
     android:orientation="vertical"
     android:background="@color/Mediumgrey">
 
+    <!-- Cart Heading -->
+    <TextView
+        android:id="@+id/cart_heading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="My Cart"
+        android:textColor="@android:color/white"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:paddingTop="16dp"
+        android:layout_marginTop="14dp"
+        android:paddingBottom="4dp" />
+
+    <View
+        android:layout_width="74dp"
+        android:layout_height="3dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/purple_700"
+        android:layout_marginBottom="8dp" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -15,7 +36,7 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp">
+            android:layout_marginTop="12dp">
 
             <TextView
                 android:id="@+id/total_items_text"

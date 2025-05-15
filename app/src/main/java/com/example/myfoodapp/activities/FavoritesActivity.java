@@ -1,6 +1,7 @@
 package com.example.myfoodapp.activities;
 
 import android.os.Bundle;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myfoodapp.R;
 import com.example.myfoodapp.adapters.FavoritesAdapter;
 import com.example.myfoodapp.models.HomeVerModel;
+import com.example.myfoodapp.utils.VerticalSpacingItemDecoration;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.*;
 
@@ -21,6 +23,7 @@ public class FavoritesActivity extends AppCompatActivity {
     private FavoritesAdapter adapter;
     private final ArrayList<HomeVerModel> favoriteList = new ArrayList<>();
     private DatabaseReference favRef;
+    private TextView totalFavoritesText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +34,10 @@ public class FavoritesActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new FavoritesAdapter(this, favoriteList);
         recyclerView.setAdapter(adapter);
+
+        totalFavoritesText = findViewById(R.id.total_favorites_text);
+        recyclerView.addItemDecoration(new VerticalSpacingItemDecoration(24));
+
 
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         favRef = FirebaseDatabase.getInstance().getReference("favorites").child(uid);
@@ -50,6 +57,7 @@ public class FavoritesActivity extends AppCompatActivity {
                     }
                 }
                 adapter.notifyDataSetChanged();
+                totalFavoritesText.setText("Total Favorites: " + favoriteList.size());
             }
 
             @Override

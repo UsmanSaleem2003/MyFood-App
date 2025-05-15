@@ -58,10 +58,19 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
 
         holder.deleteBtn.setOnClickListener(v -> {
             String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            FirebaseDatabase.getInstance().getReference("favorites")
-                    .child(uid).child(String.valueOf(model.getId())).removeValue();
+            int pos = holder.getAdapterPosition();
 
-            Toast.makeText(context, "Removed from favorites", Toast.LENGTH_SHORT).show();
+            FirebaseDatabase.getInstance().getReference("favorites")
+                    .child(uid).child(String.valueOf(model.getId()))
+                    .removeValue()
+                    .addOnSuccessListener(unused -> {
+                        favorites.remove(pos);
+                        notifyItemRemoved(pos);
+                        Toast.makeText(context, "Removed from favorites", Toast.LENGTH_SHORT).show();
+                    })
+                    .addOnFailureListener(e ->
+                            Toast.makeText(context, "Failed to remove favorite", Toast.LENGTH_SHORT).show()
+                    );
         });
     }
 
